@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup - Hunger Oasis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#f0d792',
+                            DEFAULT: '#d4af37',
+                            dark: '#9c7c19',
+                        },
+                        dark: {
+                            light: '#2c2c2c',
+                            DEFAULT: '#121212',
+                            darker: '#0a0a0a',
+                        }
+                    },
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gold-text {
+            color: #d4af37;
+        }
+        
+        .gold-border {
+            border-color: #d4af37;
+        }
+        
+        .btn-gold {
+            background-color: #d4af37;
+            color: #0a0a0a;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gold:hover {
+            background-color: #9c7c19;
+            color: #fff;
+        }
+        
+        .btn-outline-gold {
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-gold:hover {
+            background-color: #d4af37;
+            color: #0a0a0a;
+        }
+        
+        .auth-container {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('images/restaurant-bg.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .auth-form {
+            backdrop-filter: blur(10px);
+            background-color: rgba(18, 18, 18, 0.8);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="auth-container min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full">
+            <div class="text-center mb-10 animate-fade-in">
+                <a href="index.html" class="text-4xl font-playfair font-bold gold-text">HUNGER OASIS</a>
+                <h2 class="mt-6 text-3xl font-bold text-white">
+                    <span id="login-title">Login to your account</span>
+                    <span id="signup-title" class="hidden">Create an account</span>
+                </h2>
+                <p class="mt-2 text-sm text-gray-400">
+                    <span id="login-subtitle">Don't have an account? <button id="show-signup" class="gold-text hover:text-gold-light">Sign up</button></span>
+                    <span id="signup-subtitle" class="hidden">Already have an account? <button id="show-login" class="gold-text hover:text-gold-light">Login</button></span>
+                </p>
+            </div>
+            
+            <div class="auth-form rounded-lg shadow-lg p-8 animate-fade-in delay-100">
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-6" method="post" action="backend/login.php">
+                    <div>
+                        <label for="login-email" class="block text-sm font-medium mb-2">Email</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-envelope text-gray-500"></i>
+                            </span>
+                            <input id="login-email" name="email" type="email" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="login-password" class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-lock text-gray-500"></i>
+                            </span>
+                            <input id="login-password" name="password" type="password" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-gold border-gray-600 rounded focus:ring-gold-dark">
+                            <label for="remember-me" class="ml-2 block text-sm text-gray-400">
+                                Remember me
+                            </label>
+                        </div>
+                        
+                        <div class="text-sm">
+                            <a href="#" class="gold-text hover:text-gold-light">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full px-6 py-3 rounded-md btn-gold font-medium flex items-center justify-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Login
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Signup Form -->
+                <form id="signup-form" class="hidden space-y-6" method="post" action="backend/signup.php">
+                    <div>
+                        <label for="signup-name" class="block text-sm font-medium mb-2">Full Name</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-user text-gray-500"></i>
+                            </span>
+                            <input id="signup-name" name="name" type="text" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="signup-email" class="block text-sm font-medium mb-2">Email</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-envelope text-gray-500"></i>
+                            </span>
+                            <input id="signup-email" name="email" type="email" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="signup-password" class="block text-sm font-medium mb-2">Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-lock text-gray-500"></i>
+                            </span>
+                            <input id="signup-password" name="password" type="password" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="signup-confirm-password" class="block text-sm font-medium mb-2">Confirm Password</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                                <i class="fas fa-lock text-gray-500"></i>
+                            </span>
+                            <input id="signup-confirm-password" name="confirm_password" type="password" required class="w-full pl-10 pr-3 py-2 bg-dark border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-gold focus:border-transparent">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full px-6 py-3 rounded-md btn-gold font-medium flex items-center justify-center">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="text-center mt-6">
+                <a href="index.html" class="text-gray-400 hover:text-white flex items-center justify-center">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Toggle between login and signup forms
+        document.getElementById('show-signup').addEventListener('click', function() {
+            document.getElementById('login-form').classList.add('hidden');
+            document.getElementById('signup-form').classList.remove('hidden');
+            document.getElementById('login-title').classList.add('hidden');
+            document.getElementById('signup-title').classList.remove('hidden');
+            document.getElementById('login-subtitle').classList.add('hidden');
+            document.getElementById('signup-subtitle').classList.remove('hidden');
+        });
+        
+        document.getElementById('show-login').addEventListener('click', function() {
+            document.getElementById('signup-form').classList.add('hidden');
+            document.getElementById('login-form').classList.remove('hidden');
+            document.getElementById('signup-title').classList.add('hidden');
+            document.getElementById('login-title').classList.remove('hidden');
+            document.getElementById('signup-subtitle').classList.add('hidden');
+            document.getElementById('login-subtitle').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

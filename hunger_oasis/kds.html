@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Display System - Hunger Oasis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            light: '#f0d792',
+                            DEFAULT: '#d4af37',
+                            dark: '#9c7c19',
+                        },
+                        dark: {
+                            light: '#2c2c2c',
+                            DEFAULT: '#121212',
+                            darker: '#0a0a0a',
+                        }
+                    },
+                    fontFamily: {
+                        'playfair': ['"Playfair Display"', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .gold-text {
+            color: #d4af37;
+        }
+        
+        .gold-border {
+            border-color: #d4af37;
+        }
+        
+        .btn-gold {
+            background-color: #d4af37;
+            color: #0a0a0a;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gold:hover {
+            background-color: #9c7c19;
+            color: #fff;
+        }
+        
+        .btn-outline-gold {
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-gold:hover {
+            background-color: #d4af37;
+            color: #0a0a0a;
+        }
+        
+        .order-card {
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dark-darker border-b border-gray-800 py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <h1 class="text-2xl font-playfair font-bold gold-text">HUNGER OASIS</h1>
+                <span class="ml-4 text-lg text-gray-400">Kitchen Display System</span>
+            </div>
+            <div class="flex items-center">
+                <p class="text-gray-400 mr-4">
+                    <span id="current-date"></span> | <span id="current-time"></span>
+                </p>
+                <a href="index.html" class="px-4 py-2 rounded-md btn-outline-gold font-medium text-sm">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Exit
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Add this notification area after the header -->
+    <div id="notification-area" class="fixed top-20 right-4 z-40 w-80 max-w-full"></div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-playfair font-bold mb-4">
+                <span class="gold-text">Active</span> Orders
+            </h2>
+            
+            <div class="flex space-x-4 mb-6">
+                <button class="order-filter-btn active px-4 py-2 rounded-md btn-gold font-medium text-sm" data-filter="all">
+                    All Orders
+                </button>
+                <button class="order-filter-btn px-4 py-2 rounded-md btn-outline-gold font-medium text-sm" data-filter="pending">
+                    Pending
+                </button>
+                <button class="order-filter-btn px-4 py-2 rounded-md btn-outline-gold font-medium text-sm" data-filter="preparing">
+                    Preparing
+                </button>
+                <button class="order-filter-btn px-4 py-2 rounded-md btn-outline-gold font-medium text-sm" data-filter="ready">
+                    Ready
+                </button>
+            </div>
+
+            <!-- Add this status counter section after the filter buttons -->
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <div class="bg-dark-light p-4 rounded-lg border border-yellow-600 text-center">
+                    <h3 class="text-lg font-medium mb-1">Pending</h3>
+                    <p id="pending-count" class="text-2xl font-bold gold-text">0</p>
+                </div>
+                <div class="bg-dark-light p-4 rounded-lg border border-blue-600 text-center">
+                    <h3 class="text-lg font-medium mb-1">Preparing</h3>
+                    <p id="preparing-count" class="text-2xl font-bold gold-text">0</p>
+                </div>
+                <div class="bg-dark-light p-4 rounded-lg border border-green-600 text-center">
+                    <h3 class="text-lg font-medium mb-1">Ready</h3>
+                    <p id="ready-count" class="text-2xl font-bold gold-text">0</p>
+                </div>
+                <div class="bg-dark-light p-4 rounded-lg border border-gray-600 text-center">
+                    <h3 class="text-lg font-medium mb-1">Delivered</h3>
+                    <p id="delivered-count" class="text-2xl font-bold gold-text">0</p>
+                </div>
+            </div>
+
+            <!-- Add this toggle for auto-refresh after the filter buttons -->
+            <div class="flex items-center justify-end mb-6">
+                <label for="auto-refresh" class="flex items-center cursor-pointer">
+                    <span class="mr-3 text-sm">Auto-refresh</span>
+                    <div class="relative">
+                        <input type="checkbox" id="auto-refresh" class="sr-only" checked>
+                        <div class="w-10 h-5 bg-gray-700 rounded-full shadow-inner"></div>
+                        <div class="dot absolute w-5 h-5 bg-gold rounded-full transition -left-1 -top-0"></div>
+                    </div>
+                    <span id="refresh-status" class="ml-3 text-sm text-gray-400">ON (10s)</span>
+                </label>
+            </div>
+            
+            <!-- Orders Container -->
+            <div id="orders-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Orders will be populated dynamically -->
+                <div class="pulse text-center text-gray-400 py-12 col-span-full">
+                    <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
+                    <p>Loading orders...</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Order Details Modal -->
+        <div id="order-details-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+            <div class="absolute inset-0 bg-black bg-opacity-70"></div>
+            <div class="relative bg-dark-light p-8 rounded-lg shadow-xl max-w-2xl w-full mx-4">
+                <button id="close-details-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <h2 class="text-2xl font-playfair font-bold mb-2">
+                    Order <span id="modal-order-id" class="gold-text">#12345</span>
+                </h2>
+                
+                <div class="flex items-center mb-4">
+                    <p class="text-sm text-gray-400 mr-4" id="modal-order-time">12:30 PM</p>
+                    <p class="text-sm" id="modal-order-type">Dine-in • Table 5</p>
+                </div>
+                
+                <hr class="border-gray-700 mb-4">
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3">Order Items</h3>
+                    <div id="modal-order-items" class="space-y-3">
+                        <!-- Order items will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-medium mb-3">Order Status</h3>
+                    <div class="flex items-center space-x-4">
+                        <button class="status-btn px-4 py-2 rounded-md font-medium text-sm border border-gray-700 status-pending" data-status="pending">
+                            Pending
+                        </button>
+                        <button class="status-btn px-4 py-2 rounded-md font-medium text-sm border border-gray-700 status-preparing" data-status="preparing">
+                            Preparing
+                        </button>
+                        <button class="status-btn px-4 py-2 rounded-md font-medium text-sm border border-gray-700 status-ready" data-status="ready">
+                            Ready
+                        </button>
+                        <button class="status-btn px-4 py-2 rounded-md font-medium text-sm border border-gray-700 status-delivered" data-status="delivered">
+                            Delivered
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button id="update-status-btn" class="px-6 py-3 rounded-md btn-gold font-medium">
+                        Update Status
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add this audio element at the end of the body, before the script tag -->
+    <audio id="new-order-sound" src="sounds/new-order.mp3" preload="auto"></audio>
+    <audio id="status-update-sound" src="sounds/status-update.mp3" preload="auto"></audio>
+
+    <script src="js/kds.js"></script>
+</body>
+</html>
